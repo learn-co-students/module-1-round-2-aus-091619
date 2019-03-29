@@ -1,4 +1,4 @@
-# Module 1 Round 2: Flatflix
+# Module 1 Code Challenge: Flatflix
 
 For this challenge, we'll be building out a Netflix clone!
 
