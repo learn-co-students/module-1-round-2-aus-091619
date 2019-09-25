@@ -1,62 +1,89 @@
-# Object Relations Assessment
+# Module 1 Code Challenge: Flatflix
 
-For this challenge, we'll be building out Netflix! A `Viewer` has many `Movie`s through `QueueItem`s. A `Movie` can appear on many `Viewer`s' queues. A `Viewer` can rate a `Movie`, marking their rating on the `QueueItem`.
+For this challenge, we'll be building out a Netflix clone!
+
+A `Viewer` has many `Movie`s through `Review`s. A `Movie` can be reviewed by many `Viewer`s. A `Viewer` can review many `Movie`s, marking their rating on the `Review`.
 
 As always, make sure to sketch out your domain and think about the single source of truth for your data.
 
-## Topics
+## Key Concepts
 
-- Classes vs Instances
-- Variable Scope ( Class, Instance, Local )
-- Object Relationships
-- Arrays and Array Methods
-- Class Methods
+- Class and instance variables
+- Class and instance methods
+- One-to-many relationships
+- Many-to-many relationships
+- Enumerables
 
-## Notes
+## Getting Started
 
-Your goal is to build out all of the methods listed in the deliverables. Do your best to follow Ruby best practices. For example, use higher-level array methods such as `map`, `select`, and `find` when appropriate in place of `each`.
+To get started, run `bundle install` while inside of this directory.
 
-We've provided you with a console that you can use to test your code. To enter a console session, run `ruby tools/console.rb`. You must run this from this assignment's root directory, not from inside the tools directory. You'll be able to test out the methods that you write here. Take a look at that file to see how you can pre-define variables and create object instances, rather than manually doing it in every single console session.
+We've provided you with a console that you can use to test your code. To enter a console session, run `ruby tools/console.rb`.
+
+You'll be able to test out the methods that you write here. Take a look at `tools/console.rb` to see where you can define variables and create object instances to test out your code, rather than manually doing it in every single console session.
 
 ## Deliverables
 
-Implement all of the methods described below
+Your goal is to build out the sets of methods in order. _Each set of methods is built up from the last set of methods._
 
-### `Viewer`
+Do your best to follow Ruby best practices. For example, use higher-level array methods such as `map`, `select`, and `find` when appropriate in place of `each`.
 
-+ `Viewer.all`
-  + returns all of the viewers
-+ `Viewer#queue_items`
-  + this method should return an array of `QueueItem` instances associated with this instance of `Viewer`.
-+ `Viewer#queue_movies`
-  + this method should return an array of `Movie` instances in the `Viewer`'s queue.
-+ `Viewer#add_movie_to_queue(movie)`
-  + this method should receive a `Movie` instance as its only argument and add it to the `Viewer`'s queue
-+ `Viewer#rate_movie(movie, rating)`
-  + given a movie and a rating (a number between 1 and 5), this method should assign the rating to the viewer's `QueueItem` for that movie. If the movie is not already in the viewer's queue, this method should add a new `QueueItem` with the viewer, movie, and rating. If the movie is already in the queue, this method should not create a new `QueueItem`.
+### 1. `Review` model and relationships
 
-### `QueueItem`
+- `Review#initialize(viewer, movie, rating)`
+  - `Viewer` instance, `Movie` instance, and rating are passed in as arguments
+  - the `Review` instance is added to list of all `Review` instances
+- `Review.all`
+  - returns an array of all initialized `Review` instances
+- `Review#viewer`
+  - returns the `Viewer` instance associated with the `Review` instance
+- `Review#movie`
+  - returns the `Movie` instance associated with the `Review` instance
+- `Review#rating`
+  - returns the rating for the `Review` instance;
+  - if the viewer has not yet rated the movie, this method should return `nil`.
 
-_A `QueueItem` object represents that an individual user has added a particular movie to their queue, and possibly rated it. **It is not the full queue, but a single item in the queue.**_
+### 2. `Viewer` relationships
 
-+ `QueueItem.all`
-  + returns an array of all `QueueItem`s
-+ `QueueItem#viewer`
-  + returns the viewer associated with this `QueueItem`
-+ `QueueItem#movie`
-  + returns the movie associated with this `QueueItem`
-+ `QueueItem#rating`
-  + returns the rating for this `QueueItem`. If the viewer has not yet rated the movie, `QueueItem#rating` should be `nil`
+- `Viewer#reviews`
+  - returns an array of `Review` instances associated with the `Viewer` instance.
+- `Viewer#add_review(movie)`
+  - `Movie` instance is passed in as its only argument and this method adds the `Movie` instance to the `Viewer` instance's list of reviewed movies;
+  - returns a `Review` instance.
+- `Viewer#reviewed_movies`
+  - returns an array of `Movie` instances reviewed by the `Viewer` instance.
+- `Viewer#reviewed_movie?`
+  - a `Movie` instance is passed in as its only argument;
+  - returns `true` if the `Viewer` instance already has an association with the `Movie` instance.
 
-### `Movie`
+### 3. Checkpoint
 
-+ `Movie.all`
-  + returns an array of all `Movie`
-+ `Movie#queue_items`
-  + returns an array of all the `QueueItem` instances that contain this movie
-+ `Movie#viewers`
-  + returns an array of all of the `Viewer`s with this `Movie` instance in their queue
-+ `Movie#average_rating`
-  + returns the average of all ratings for this instance of `Movie`
-+ `Movie.highest_rated`
-  + returns the instance of `Movie` with the highest average rating
+After testing all of your code up to this point, `git add` and `git commit` your code. **No need to `git push` yet**.
+
+### 4. `Movie` relationships
+
+- `Movie#reviews`
+  - returns an array of all the `Review` instances for the `Movie`.
+- `Movie#viewers`
+  - returns an array of all of the `Viewer` instances that reviewed the `Movie`.
+
+### 5. Advanced `Review` methods
+
+- `Movie#average_rating`
+  - returns the average of all ratings for the `Movie` instance;
+  - to average ratings, add all ratings together and divide by the total number of ratings.
+- `Movie.highest_rated`
+  - returns the `Movie` instance with the highest average rating.
+- `Viewer#rate_movie(movie)`
+  - a `Movie` instance and a rating are passed in as arguments;
+  - assigns the rating to the `Review` instance already associated with this `Viewer` instance and the passed `Movie` instance;
+  - if the `Viewer` instance and the passed `Movie` instance are _not_ already associated, this method should create a new `Review` instance;
+  - rating should be a number between 1 and 5, other values should not be allowed.
+
+## Wrapping up
+
+When you have finished the deliverables or the time limit has been reached, `git add`, `git commit`, and `git push` to your fork of the code challenge repo.
+
+Visit your fork on GitHub, and make sure your changes are there. If your changes are there, click **New Pull Request**, provide a title, and click the green **Create Pull Request** button.
+
+Copy the link of your pull request, paste it into the assignment page, and submit the assignment.
